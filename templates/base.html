@@ -5,20 +5,24 @@
     <meta charset="UTF-8">
     <title>{% block title %} {% endblock %}</title>
     <link href=" {% static 'bootstrap.css' %} " rel="stylesheet">
+    <link href=" {% static 'main.css' %} " rel="stylesheet">
     <style>
-        .jumbotron{
+        .jumbotron {
             padding: 15px;
-            background-color: #76ABAE ;
+            background-color: #76ABAE;
             font-family: Ray, monospace;
             border-radius: 15px;
             margin: 8px;
+            font-size: 16px;
+            color: ;
         }
     </style>
 </head>
 <body style="background-color: #222831">
-    <div class="jumbotron">
-        {% include 'inc/navbar.html' %}
-        {% block content %} {% endblock %}
-    </div>
+<div class="jumbotron">
+    {% include 'inc/navbar.html' %}
+    {% include 'inc/messages.html' %}
+    {% block content %} {% endblock %}
+</div>
 </body>
 </html>

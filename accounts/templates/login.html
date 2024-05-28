@@ -1,10 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'base.html' %}
+{% block title %} Login {% endblock %}
+
+
+
+{% block content %}
+
+    <div >
+        <form novalidate method="post" action="">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Login" class="btn btn-primary">
+        </form>
+        <a href="{% url 'accounts:password-reset' %}">Forgot Password?</a>
+    </div>
+{% endblock %}
