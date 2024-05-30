@@ -73,7 +73,7 @@ class PostLikeView(LoginRequiredMixin, View):
 
 class PostCreateView(LoginRequiredMixin, View):
     template_name = 'posts/post_create.html'
-    form_class = PostCreateForm
+    form_class = PostForm
 
     def get(self, request):
         form = self.form_class()
@@ -90,3 +90,31 @@ class PostCreateView(LoginRequiredMixin, View):
         return render(request, self.template_name, {'form': form})
 
 
+class PostUpdateView(LoginRequiredMixin, View):
+    template_name = 'posts/post_update.html'
+    form_class = PostForm
+
+    def get(self, request, slug):
+        post = get_object_or_404(Post, slug=slug, author=self.request.user)
+        form = self.form_class(instance=post, initial={'image': post.image.url})
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request, slug):
+        post = get_object_or_404(Post, slug=slug)
+        form = self.form_class(request.POST, files=request.FILES, instance=post)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Post updated', 'success')
+            return redirect('posts:detail', post.slug)
+        return render(request, self.template_name, {'form': form})
+
+
+class PostDeleteView(LoginRequiredMixin, View):
+    def get(self, request, slug):
+        post = get_object_or_404(Post, slug= slug)
+        if post.author.id == request.user.id:
+            post.delete()
+            messages.success(request, 'post deleted successfully', 'success')
+        else:
+            messages.error(request, 'you cant delete this post', 'danger')
+        return redirect('accounts:profile', request.user.id)

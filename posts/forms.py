@@ -21,12 +21,12 @@ class ReplyCommentForm(forms.ModelForm):
         }
 
 
-class PostCreateForm(forms.ModelForm):
+class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ('title', 'image', 'body')
+        fields = ('title', 'image', 'body',)
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control'}),
-            'image': forms.FileInput(attrs={'class': 'form-control'}),
+            'image': forms.FileInput(attrs={'class': 'form-control', 'required': True}),
             'body': forms.TextInput(attrs={'class': 'form-control'}),
         }

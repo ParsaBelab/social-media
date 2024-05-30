@@ -88,12 +88,11 @@ class UserEditProfileView(LoginRequiredMixin, View):
         if form.is_valid():
             form.save()
             cd = form.cleaned_data
-            id = request.user.id
             request.user.first_name = cd['first_name']
             request.user.last_name = cd['last_name']
             request.user.save()
             messages.success(request, 'Edited!', 'success')
-            return redirect('accounts:profile', id=id)
+            return redirect('accounts:profile', id=request.user.id)
         return render(request, self.template_name, {'form': form})
 
 

@@ -3,7 +3,7 @@
 {% block title %} All Posts {% endblock %}
 
 {% block content %}
-    <div class="row row-cols-3 ">
+    <div class="row row-cols-3 justify-content-center">
         {% for post in posts %}
             <div class=" col bg-light ">
                 <div class="d-flex justify-content-start card-header align-items-end p-1  ">
@@ -37,6 +37,10 @@
             </div>
             <p class="p-3 pb-0 pt-0">{{ post.body|truncatewords:"5" }}</p>
             </div>
+            </div>
+        {% empty %}
+            <div class="d-flex justify-content-center">
+            <h3 class="">No Post Yet!</h3>
             </div>
         {% endfor %}
     </div>

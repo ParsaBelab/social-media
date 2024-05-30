@@ -8,4 +8,6 @@ urlpatterns = [
     path('<slug:slug>/', PostDetailView.as_view(), name='detail'),
     path('reply/<slug:slug>/<int:comment_id>/', PostAddReplyView.as_view(), name='reply'),
     path('like/<slug:slug>', PostLikeView.as_view(), name='like'),
+    path('update/<slug:slug>', PostUpdateView.as_view(), name='update'),
+    path('delete/<slug:slug>', PostDeleteView.as_view(), name='delete'),
 ]

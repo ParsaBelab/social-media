@@ -8,7 +8,7 @@ from .SizeValidation import file_size
 
 class Post(models.Model):
     title = models.CharField(max_length=75, unique=True)
-    image = models.ImageField(upload_to='posts/image/', validators=[file_size], null=True, blank=True)
+    image = models.ImageField(upload_to='posts/image/', validators=[file_size])
     body = models.CharField(max_length=250)
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')
     slug = models.SlugField(unique=True, null=True, blank=True)

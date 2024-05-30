@@ -5,24 +5,24 @@
 {% block content %}
     <div class="card mb-3">
         <div class="d-flex justify-content-start card-header align-items-center p-1">
+            <a href="{% url 'accounts:profile' post.author.id %}">
             {% if post.author.profile.image %}
                 <img class=" rounded-circle" style="width: 50px; height: 50px"
                      src="{{ post.author.profile.image.url }}">
             {% else %}
                 <img class=" rounded-circle" style="width: 50px; height: 50px" src="{% static 'pic/userpic.png' %}">
-            {% endif %}
+            {% endif %}</a>
             <h5 class="text p-2">{{ post.author }} | {{ post.created|timesince }} ago</h5>
             {% if request.user == post.author %}
-                <a class="btn btn-info p-2 m-1 text-white" href="/">Update</a>
-                <a class="btn btn-danger p-2" href="/">Delete</a>
+                <a class="btn btn-info p-2 m-1 text-white" href="{% url 'posts:update' post.slug %}">Update</a>
+                <a class="btn btn-danger p-2" href="{% url 'posts:delete' post.slug %}" onclick="postDelete()">Delete</a>
             {% endif %}
         </div>
-        <a href="{{ post.get_absolute_url }}" class="text-decoration-none">
             <div class="card-body">
                 <img src="{{ post.image.url }}" style="width: 400px; height: 250px">
                 <div class="d-flex justify-content-start align-items-center">
                     <h3 class="pt-3 link-dark ">{{ post.title }}</h3>
-        </a>
+
         <div class="p-3">
             <img src="{% static 'pic/Chat.svg' %}"> {{ post.pcomments.count }}
         </div>
@@ -94,4 +94,10 @@
     {% empty %}
         <h5>No Comment yet!</h5>
     {% endfor %}
+    <script>
+        function postDelete(){
+            let n = confirm('are you sure?');
+        }
+
+    </script>
 {% endblock %}

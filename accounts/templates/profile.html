@@ -35,7 +35,7 @@
         <p class="p-3">{{ user.follower.count }} following</p>
     </div>
     {% if request.user.id == user.id %}
-        <a href="{% url 'posts:create' %}" class="btn btn-primary">Create Post</a>
+        <a href="{% url 'posts:create' %}" class="btn btn-primary d-flex justify-content-center">Create Post</a>
     {% endif %}
     <div class="row row-cols-3 p-2">
         {% for post in posts %}
