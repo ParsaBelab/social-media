@@ -7,6 +7,8 @@ from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import View
+
+from posts.models import Post
 from .forms import UserRegisterForm, UserLoginForm, UserProfileForm
 from .models import Relation
 
@@ -82,7 +84,7 @@ class UserEditProfileView(LoginRequiredMixin, View):
         return render(request, self.template_name, {'form': form})
 
     def post(self, request):
-        form = self.form_class(request.POST, instance=request.user.profile)
+        form = self.form_class(request.POST, instance=request.user.profile, files=request.FILES)
         if form.is_valid():
             form.save()
             cd = form.cleaned_data
@@ -101,10 +103,11 @@ class UserProfileView(LoginRequiredMixin, View):
     def get(self, request, id):
         is_following = False
         user = get_object_or_404(User, pk=id)
+        posts = Post.objects.filter(author=user).order_by('-created').all()
         relation = Relation.objects.filter(follower=request.user, following=user).exists()
         if relation:
             is_following = True
-        return render(request, self.template_name, {'user': user, 'is_following': is_following})
+        return render(request, self.template_name, {'user': user, 'is_following': is_following, 'posts': posts})
 
 
 class UserFollowView(LoginRequiredMixin, View):

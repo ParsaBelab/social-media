@@ -27,11 +27,7 @@ class UserProfileForm(forms.ModelForm):
         model = Profile
         exclude = ['user']
 
-    def clean_email(self):
-        email = self.cleaned_data['email']
-        if User.objects.filter(email=email).exists():
-            raise ValidationError('this email is taken')
-        return email
+
 
 
 class UserRegisterForm(forms.Form):

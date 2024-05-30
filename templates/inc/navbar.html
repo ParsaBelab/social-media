@@ -7,9 +7,11 @@
     {% else %}
       <a class="navbar-brand mb-0 h1" href="{% url 'accounts:logout' %}">logout</a>
       <a class="navbar-brand mb-0 h1" href="{% url 'accounts:profile' request.user.id %}">profile</a>
+      <a class="navbar-brand mb-0 h1" href="{% url 'posts:all' %}">posts</a>
     {% endif %}
     </nav>
     {% if  request.user.is_authenticated %} 
         <p>Welcome {{ request.user }}</p>
     {% endif %}
-</div>
+</div> 
+<hr>

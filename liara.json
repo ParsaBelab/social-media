@@ -1,0 +1,11 @@
+{
+  "django": {
+    "pythonVersion": "3.12"
+  },
+  "disk": [
+    {
+    "name" : "disk-arshiabaft",
+    "mountTo" : "media"
+    }
+  ]
+}
