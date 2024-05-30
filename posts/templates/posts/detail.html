@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} All Posts {% endblock %}
+
+{% block content %}
+    <div class="card mb-3">
+        <div class="d-flex justify-content-start card-header align-items-end p-1">
+            {% if post.author.profile.image %}
+                <img class=" rounded-circle" style="width: 50px; height: 50px"
+                     src="{{ post.author.profile.image.url }}">
+            {% else %}
+                <img class=" rounded-circle" style="width: 50px; height: 50px" src="{% static 'pic/userpic.png' %}">
+            {% endif %}
+            <h5 class="text p-2">{{ post.author }} | {{ post.created|timesince }} ago</h5>
+        </div>
+        <a href="{{ post.get_absolute_url }}" class="text-decoration-none">
+            <div class="card-body">
+                <img src="{{ post.image.url }}" style="width: 400px; height: 250px">
+                <div class="d-flex justify-content-start align-items-center">
+                    <h3 class="pt-3 link-dark ">{{ post.title }}</h3>
+        </a>
+        <div class="p-3">
+            <img src="{% static 'pic/chat.svg' %}"> {{ post.pcomments.count }}
+        </div>
+        {% if request.user.ulikes.exists %}
+            <a class=" link-dark text-decoration-none" href="{% url 'posts:like' post.slug %}"><img
+                    src="{% static 'pic/liked.png' %}" style="width:25px; height:25px;">
+                {{ post.plikes.count }}</a>
+        {% else %}
+            <a class=" link-dark text-decoration-none" href="{% url 'posts:like' post.slug %}"><img
+                    src="{% static 'pic/heart.svg' %}">
+                {{ post.plikes.count }}</a>
+        {% endif %}
+    </div>
+    <p class="p-3 pb-0 pt-0">{{ post.body }}</p>
+    </div>
+    <hr>
+    <div class="p-3">
+        <h4>Send Comment</h4>
+        <form method="post" action="">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" class="btn btn-primary" value="Send">
+        </form>
+    </div>
+    </div>
+    {% for comment in comments %}
+        <div class="card bg-dark text-white mb-2">
+        <div class="d-flex justify-content-start card-header align-items-end p-1">
+            {% if comment.author.profile.image %}
+                <img class=" rounded-circle" style="width: 50px; height: 50px"
+                     src="{{ comment.author.profile.image.url }}">
+            {% else %}
+                <img class=" rounded-circle" style="width: 50px; height: 50px" src="{% static 'pic/userpic.png' %}">
+            {% endif %}
+            <h5 class="text p-2">{{ comment.author }} | {{ comment.created|timesince }} ago</h5>
+        </div>
+        <div class="card-body">
+            <p>{{ comment.body }}</p>
+        </div>
+        <hr>
+        <div class="p-3">
+            <h4>Send Reply</h4>
+            <form method="post" action="{% url 'posts:reply' post.slug comment.id %}">
+                {% csrf_token %}
+                {{ reply_form.as_p }}
+                <input type="submit" class="btn btn-primary" value="Send">
+            </form>
+        </div>
+        {% with replies=comment.rcomments.all %}
+        {% for reply in replies %}
+            <div class="card bg-light-subtle  m-2">
+            <div class="d-flex justify-content-start card-header align-items-center p-1">
+                <img src="{% static 'pic/reply.png' %}" style="width: 30px; height: 30px">
+                {% if reply.auther.profile.image.exists %}
+                    <img class=" rounded-circle" style="width: 50px; height: 50px"
+                         src="{{ reply.author.profile.image.url }}">
+                {% else %}
+                    <img class=" rounded-circle" style="width: 50px; height: 50px"
+                         src="{% static 'pic/userpic.png' %}">
+                {% endif %}
+                <h5 class="text p-2">{{ reply.author }} | {{ reply.created|timesince }} ago</h5>
+            </div>
+            <div class="card-body">
+                <p>{{ reply.body }}</p>
+            </div> <br>
+        {% endfor %}
+        {% endwith %}
+    </div><br/>
+    {% empty %}
+        <h5>No Comment yet!</h5>
+    {% endfor %}
+{% endblock %}

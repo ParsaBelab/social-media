@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} All Posts {% endblock %}
+
+{% block content %}
+    <div class="row row-cols-3 p-2">
+        {% for post in posts %}
+            <div class=" col m-1 bg-light rounded ">
+                <div class="d-flex justify-content-start card-header align-items-end p-1  ">
+                    {% if post.author.profile.image %}
+                        <img class=" rounded-circle" style="width: 50px; height: 50px"
+                             src="{{ post.author.profile.image.url }}">
+                    {% else %}
+                        <img class=" rounded-circle" style="width: 50px; height: 50px"
+                             src="{% static 'pic/userpic.png' %}">
+                    {% endif %}
+                    <h5 class="text p-2">{{ post.author }} | {{ post.created|timesince }} ago</h5>
+
+                </div>
+                <a href="{{ post.get_absolute_url }}" class="text-decoration-none">
+                    <div class="card-body">
+                        <img src="{{ post.image.url }}" style="width: 400px; height: 250px">
+                        <div class="d-flex justify-content-start align-items-center">
+                            <h3 class="pt-3 link-dark ">{{ post.title }}</h3>
+                </a>
+                <a class="p-3 pt-0 pb-0 link-dark text-decoration-none "><img
+                        src="{% static 'pic/chat.svg' %}"> {{ post.pcomments.count }}</a>
+                {% if request.user.ulikes.exists %}
+                    <a class=" link-dark text-decoration-none" href="{% url 'posts:like' post.slug %}"><img
+                            src="{% static 'pic/liked.png' %}" style="width:25px; height:25px;">
+                        {{ post.plikes.count }}</a>
+                {% else %}
+                    <a class=" link-dark text-decoration-none" href="{% url 'posts:like' post.slug %}"><img
+                            src="{% static 'pic/heart.svg' %}">
+                        {{ post.plikes.count }}</a>
+                {% endif %}
+            </div>
+            <p class="p-3 pb-0 pt-0">{{ post.body|truncatewords:"5" }}</p>
+            </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
